@@ -118,68 +118,105 @@ public class TicTacToe {
                                 x = j;
                                 moveFound = true;
                                 System.out.println("LU");
+
                             }
                             //Вверх
                             else if (i -1 >= 0 && map[i-1][j] == DOT_0){
+
                                 y = i;
                                 x = j;
                                 moveFound = true;
                                 System.out.println("U");
+
                             }
                             //Право вверх
                             else if(i - 1 >= 0 && j + 1 < SIZE && map[i-1][j+1] == DOT_0){
+
                                 y = i;
                                 x = j;
                                 moveFound = true;
                                 System.out.println("RU");
+
                             }
                             //право
                             else if(j + 1 < SIZE && map[i][j+1] == DOT_0){
+
                                 y = i;
                                 x = j;
                                 moveFound = true;
                                 System.out.println("R");
+
                             }
                             //право низ
                             else if(i + 1 >= 0 && j + 1 < SIZE && map[i+1][j+1] == DOT_0){
+
                                 y = i;
                                 x = j;
                                 moveFound = true;
                                 System.out.println("RD");
+
                             }
                             //низ
                             else if (i +1 >= 0 && map[i+1][j] == DOT_0){
+
                                 y = i;
                                 x = j;
                                 moveFound = true;
                                 System.out.println("B");
+
                             }
                             //лево низ
                             else if (i + 1 >= 0 && j - 1 >= 0 && map[i+1][j-1] == DOT_0){
+
                                 y = i;
                                 x = j;
                                 moveFound = true;
                                 System.out.println("LD");
+
                             }
                             //лево
                             else if(j - 1 < SIZE && map[i][j-1] == DOT_0){
+
                                 y = i;
                                 x = j;
                                 moveFound = true;
                                 System.out.println("L");
+
                             }
                         }
-                            //если ход найден прирываем внутренний цикл
-                            if (moveFound){
-                                break;
-                            }
-                    }
-                        //если ход найден прирываем внешний цикл
+                        //если ход найден прирываем внутренний цикл
                         if (moveFound){
                             break;
                         }
+                    }
+                    //если ход найден прирываем внешний цикл
+                    if (moveFound){
+                        break;
+                    }
                 }
             }
+            //алгоритм с подсчётом очков
+            else{
+                int maxScoreFiledX = -1;
+                int maxScoreFiledY = -1;
+                int maxScore = 0;
+
+                for (int i = 0; i < SIZE; i++){
+                    for(int j = 0; j < SIZE; j++){
+                        int filedScore = 0;
+
+                        if( map[i][j] == DOT_Empty)
+                            //проверяем направления
+                            //лево вверх
+                            if (i -1 >= 0 && j - 1 >= 0 && map[i-1][j-1] == DOT_0){
+                                filedScore++;
+                                System.out.println("LU");
+                            }
+
+                    }
+                }
+            }
+
             for (int i = 0; i < SIZE; i++){
                 for (int j = 0; j < SIZE; j++ ){
                     //проверяем клетки по направлениям
