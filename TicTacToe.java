@@ -6,7 +6,7 @@ public class TicTacToe {
 
     /**
     *Блок настроек игры
-    * */
+    */
     private static char[][] map; // двумерный массив символов, матрица игры.
     private static int SIZE = 3; // размерность поля.
 
@@ -15,7 +15,7 @@ public class TicTacToe {
     private static final char DOT_0 = '0'; // нолик
 
     private static final boolean SILLY_MODE     = false; //константа SILLY_MODE, режим глупого компуктера.
-    private static final boolean SCORING_MODE   = false;
+    private static final boolean SCORING_MODE   = true;
 
     private static Scanner scanner  = new Scanner(System.in);//класс Scanner, для работы с пользовательским вводом.
     private static Random random    = new Random();
@@ -38,9 +38,9 @@ public class TicTacToe {
         System.out.println("Игра закончена!");
     }
 
-    /*
+    /**
     * Метод подготовки игрового поля
-    * */
+    */
 
     private static void initMap(){
         map = new char[SIZE][SIZE];
@@ -51,9 +51,9 @@ public class TicTacToe {
         }
     }
 
-    /*
+    /**
      * Метод вывода игрового поля на экран
-     * */
+     */
 
     private static void printMap() {
         for (int i = 0; i <= SIZE; i++) {
@@ -71,6 +71,7 @@ public class TicTacToe {
         }
         System.out.println();
     }
+
        /**
        * Ход человеком
        */
@@ -82,8 +83,9 @@ public class TicTacToe {
                 System.out.println("Введите координаты ячейки...");
                 y = scanner.nextInt() - 1;
                 x = scanner.nextInt() - 1;
-            }while (isCallValide(x, y));
-            map [y][x] = DOT_x;
+            }
+            while (!isCallValide(x, y));
+            map[y][x] = DOT_x;
         }
 
     /**
@@ -98,13 +100,14 @@ public class TicTacToe {
             do {
                 x = random.nextInt(SIZE);
                 y = random.nextInt(SIZE);
-            } while (isCallValide(x, y));
+            }
+            while (!isCallValide(x, y));
         }
         else {
             //компуктер ищет свой символ
             //компуктер решает, можно ли продолжить последовательность для выйгрыша
 
-            if(SCORING_MODE){
+            if(!SCORING_MODE){
                 //маркер того что ход найден
                 boolean moveFound = false;
                 for(int i = 0; i < SIZE; i++){
@@ -134,8 +137,7 @@ public class TicTacToe {
 
                                 y = i;
                                 x = j;
-                                moveFound = true;
-                                System.out.println("RU");
+                                moveFound = true;System.out.println("RU");
 
                             }
                             //право
@@ -145,19 +147,17 @@ public class TicTacToe {
                                 x = j;
                                 moveFound = true;
                                 System.out.println("R");
-
                             }
                             //право низ
-                            else if(i + 1 >= 0 && j + 1 < SIZE && map[i+1][j+1] == DOT_0){
+                            else if(i + 1 < SIZE && j + 1 < SIZE && map[i+1][j+1] == DOT_0){
 
                                 y = i;
                                 x = j;
                                 moveFound = true;
                                 System.out.println("RD");
-
                             }
                             //низ
-                            else if (i +1 >= 0 && map[i+1][j] == DOT_0){
+                            else if (i +1 <SIZE && map[i+1][j] == DOT_0){
 
                                 y = i;
                                 x = j;
@@ -166,7 +166,7 @@ public class TicTacToe {
 
                             }
                             //лево низ
-                            else if (i + 1 >= 0 && j - 1 >= 0 && map[i+1][j-1] == DOT_0){
+                            else if (i + 1 <SIZE && j - 1 >= 0 && map[i+1][j-1] == DOT_0){
 
                                 y = i;
                                 x = j;
@@ -175,7 +175,7 @@ public class TicTacToe {
 
                             }
                             //лево
-                            else if(j - 1 < SIZE && map[i][j-1] == DOT_0){
+                            else if(j - 1 >= 0 && map[i][j-1] == DOT_0){
 
                                 y = i;
                                 x = j;
@@ -205,27 +205,74 @@ public class TicTacToe {
                     for(int j = 0; j < SIZE; j++){
                         int filedScore = 0;
 
-                        if( map[i][j] == DOT_Empty)
+                        if( map[i][j] == DOT_Empty) {
                             //проверяем направления
                             //лево вверх
-                            if (i -1 >= 0 && j - 1 >= 0 && map[i-1][j-1] == DOT_0){
+                            if (i - 1 >= 0 && j -1 >= 0 && map[i-1][j-1] == DOT_0) {
                                 filedScore++;
                                 System.out.println("LU");
                             }
-
+                            //вверх
+                            if (i -1 >= 0 && map[i-1][j] == DOT_0) {
+                                filedScore++;
+                            }
+                            //право верх
+                            if (i - 1 >= 0 && j + 1 < SIZE && map[i-1][j+1] == DOT_0) {
+                                filedScore++;
+                            }
+                            //право
+                            if (j + 1 < SIZE && map[i][j+1] == DOT_0) {
+                                filedScore++;
+                            }
+                            //право низ
+                            if (i + 1 < SIZE && j + 1 < SIZE && map[i+1][j+1] == DOT_0) {
+                                filedScore++;
+                            }
+                            //низ
+                            if (i + 1 < SIZE && map[i + 1][j] == DOT_0) {
+                                filedScore++;
+                            }
+                            //лево низ
+                            if (i + 1 < SIZE && j - 1 >= 0 && map[i + 1][j - 1] == DOT_0) {
+                                filedScore++;
+                            }
+                            //лево
+                            if (j - 1 >= 0 && map[i][j - 1] == DOT_0) {
+                                filedScore++;
+                            }
+                        }
+                        if (filedScore > maxScore){ //полученное кол-во очков больше чем максимальное
+                            maxScore = filedScore; //перезаписываем макс.значение
+                            maxScoreFiledX = j;
+                            maxScoreFiledY = i;
+                        }
                     }
                 }
-            }
-
-            for (int i = 0; i < SIZE; i++){
-                for (int j = 0; j < SIZE; j++ ){
-                    //проверяем клетки по направлениям
+                //если в цикле найдена наилучшая клетка
+                if (maxScoreFiledX != -1){
+                    x = maxScoreFiledX;//координаты для максимального количества очков
+                    y = maxScoreFiledY;//координаты для максимального количества очков
                 }
             }
+
+                //если ничего не нашли делаем глупый ход
+                if (x == -1){
+                    do{
+                        x = random.nextInt(SIZE);
+                        y = random.nextInt(SIZE);
+                    }
+                    while (!isCallValide(x, y));
+                    System.out.println("RANDOM");
+                }
+                            /*for (int i = 0; i < SIZE; i++){
+                                for (int j = 0; j < SIZE; j++ ){
+                                    //проверяем клетки по направлениям
+                                }
+                            }*/
         }
 
         System.out.println("Компуктер выбрал ячейку " + (y + 1) + " " + (x + 1));
-        map [y][x] = DOT_0;
+        map[y][x] = DOT_0;
     }
 
     /**
@@ -282,8 +329,13 @@ public class TicTacToe {
             for (int i = 0; i < SIZE; i++){
                 for (int j = 0; j < SIZE; j++ ){
                     if (map[i][j] == DOT_Empty);
+                        //пустая клетка найдена
                         result = false;
+                }
 
+                if (!result){
+                    //выходим если пустая клетка найдена
+                    break;
                 }
             }
             return result;
