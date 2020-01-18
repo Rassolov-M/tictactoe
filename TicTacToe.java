@@ -14,7 +14,8 @@ public class TicTacToe {
     private static final char DOT_x = 'X'; // крестик
     private static final char DOT_0 = '0'; // нолик
 
-    private static final boolean SILLY_MODE = false; //константа SILLY_MODE, режим глупого компуктера.
+    private static final boolean SILLY_MODE     = false; //константа SILLY_MODE, режим глупого компуктера.
+    private static final boolean SCORING_MODE   = false;
 
     private static Scanner scanner  = new Scanner(System.in);//класс Scanner, для работы с пользовательским вводом.
     private static Random random    = new Random();
@@ -100,10 +101,88 @@ public class TicTacToe {
             } while (isCallValide(x, y));
         }
         else {
+            //компуктер ищет свой символ
+            //компуктер решает, можно ли продолжить последовательность для выйгрыша
+
+            if(SCORING_MODE){
+                //маркер того что ход найден
+                boolean moveFound = false;
+                for(int i = 0; i < SIZE; i++){
+                    for (int j = 0; j < SIZE; j++){
+                        if (map[i][j] == DOT_Empty){
+                            //проверяем направления
+                            //лево верх
+                            if (i - 1 >= 0 && j -1 >= 0 && map[i-1][j-1] == DOT_0){
+
+                                y = i;
+                                x = j;
+                                moveFound = true;
+                                System.out.println("LU");
+                            }
+                            //Вверх
+                            else if (i -1 >= 0 && map[i-1][j] == DOT_0){
+                                y = i;
+                                x = j;
+                                moveFound = true;
+                                System.out.println("U");
+                            }
+                            //Право вверх
+                            else if(i - 1 >= 0 && j + 1 < SIZE && map[i-1][j+1] == DOT_0){
+                                y = i;
+                                x = j;
+                                moveFound = true;
+                                System.out.println("RU");
+                            }
+                            //право
+                            else if(j + 1 < SIZE && map[i][j+1] == DOT_0){
+                                y = i;
+                                x = j;
+                                moveFound = true;
+                                System.out.println("R");
+                            }
+                            //право низ
+                            else if(i + 1 >= 0 && j + 1 < SIZE && map[i+1][j+1] == DOT_0){
+                                y = i;
+                                x = j;
+                                moveFound = true;
+                                System.out.println("RD");
+                            }
+                            //низ
+                            else if (i +1 >= 0 && map[i+1][j] == DOT_0){
+                                y = i;
+                                x = j;
+                                moveFound = true;
+                                System.out.println("B");
+                            }
+                            //лево низ
+                            else if (i + 1 >= 0 && j - 1 >= 0 && map[i+1][j-1] == DOT_0){
+                                y = i;
+                                x = j;
+                                moveFound = true;
+                                System.out.println("LD");
+                            }
+                            //лево
+                            else if(j - 1 < SIZE && map[i][j-1] == DOT_0){
+                                y = i;
+                                x = j;
+                                moveFound = true;
+                                System.out.println("L");
+                            }
+                        }
+                            //если ход найден прирываем внутренний цикл
+                            if (moveFound){
+                                break;
+                            }
+                    }
+                        //если ход найден прирываем внешний цикл
+                        if (moveFound){
+                            break;
+                        }
+                }
+            }
             for (int i = 0; i < SIZE; i++){
                 for (int j = 0; j < SIZE; j++ ){
                     //проверяем клетки по направлениям
-
                 }
             }
         }
