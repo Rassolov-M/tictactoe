@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class TicTacToe {
 
-    /*Блок настроек игры
-    *
+    /**
+    *Блок настроек игры
     * */
     private static char[][] map; // двумерный массив символов, матрица игры.
     private static int SIZE = 3; // размерность поля.
@@ -13,6 +13,8 @@ public class TicTacToe {
     private static final char DOT_Empty = '●'; // Пустой символ свободное поле ●
     private static final char DOT_x = 'X'; // крестик
     private static final char DOT_0 = '0'; // нолик
+
+    private static final boolean SILLY_MODE = false; //константа SILLY_MODE, режим глупого компуктера.
 
     private static Scanner scanner  = new Scanner(System.in);//класс Scanner, для работы с пользовательским вводом.
     private static Random random    = new Random();
@@ -91,10 +93,21 @@ public class TicTacToe {
         int x = -1;
         int y = -1;
 
-        do {
-            x = random.nextInt(SIZE);
-            y = random.nextInt(SIZE);
-        }while (isCallValide(x, y));
+        if(SILLY_MODE) {
+            do {
+                x = random.nextInt(SIZE);
+                y = random.nextInt(SIZE);
+            } while (isCallValide(x, y));
+        }
+        else {
+            for (int i = 0; i < SIZE; i++){
+                for (int j = 0; j < SIZE; j++ ){
+                    //проверяем клетки по направлениям
+
+                }
+            }
+        }
+
         System.out.println("Компуктер выбрал ячейку " + (y + 1) + " " + (x + 1));
         map [y][x] = DOT_0;
     }
@@ -184,4 +197,3 @@ public class TicTacToe {
         return result;
     }
 }
-//*sfscsfsfzzsrfsf
