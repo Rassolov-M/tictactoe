@@ -350,17 +350,73 @@ public class TicTacToe {
     private static boolean checkWin(char playerSymbol){
         boolean result = false;
 
-        if(
-            (map[0][0] == playerSymbol && map[0][1] == playerSymbol && map[0][2] == playerSymbol) ||
-            (map[1][0] == playerSymbol && map[1][1] == playerSymbol && map[1][2] == playerSymbol) ||
-            (map[2][0] == playerSymbol && map[2][1] == playerSymbol && map[2][2] == playerSymbol) ||
-            (map[0][0] == playerSymbol && map[1][0] == playerSymbol && map[2][0] == playerSymbol) ||
-            (map[0][1] == playerSymbol && map[1][1] == playerSymbol && map[2][1] == playerSymbol) ||
-            (map[0][2] == playerSymbol && map[1][2] == playerSymbol && map[2][2] == playerSymbol) ||
-            (map[0][0] == playerSymbol && map[1][1] == playerSymbol && map[2][2] == playerSymbol) ||
-            (map[2][0] == playerSymbol && map[1][1] == playerSymbol && map[0][2] == playerSymbol)){
-
+        if(checkWinDiagonals(playerSymbol) || checkWinLines(playerSymbol)){
             result = true;
+        }
+        return result;
+    }
+
+    /**
+     * проверка выйгрышных комбинацый по диаганали
+     * @param playerSymbol - символ игрока
+     * @return  флаг выйгрыша
+     */
+
+    private static boolean checkWinDiagonals(char playerSymbol){
+        boolean leftRight, rightLeft, result;
+        leftRight   = true;
+        rightLeft   = true;
+        result      = false;
+
+        for (int i = 0; i < SIZE; i++){
+            leftRight &= (map[i][i] == playerSymbol);
+            // if(leftRight &= (map[i][i] == playerSymbol)){
+            //   leftRight = true;
+            //}
+            //else {
+            //   leftRight = false;
+            //}
+
+            rightLeft &= (map [SIZE - i - 1][i] == playerSymbol);
+
+        }
+        if (leftRight || rightLeft){
+            result = true;
+             }
+        return result;
+    }
+
+    /**
+     *  проверка выйгрыша по столбцам и линиям
+     * @param - playerSymbol  символ игрока
+     * @return флаг победы
+     */
+
+    private static boolean checkWinLines(char playerSymbol){
+        boolean cols, rows, result;
+        result = false;
+
+        for (int col = 0; col < SIZE; col++){
+            cols = true;
+            rows = true;
+
+            for (int row = 0; row < row; row++){
+                cols &= (map[col][row] == playerSymbol);
+                rows &= (map[row][col] == playerSymbol);
+
+                //Это условие после каждой проверки колонки и столбца
+                //позволяет останавливать выполнять дальнеейшее, без проверки
+                // всех остальных столбцов и строк
+
+                if (cols || rows) {
+                    result = true;
+                    break;
+                }
+                if (result){
+                    break;
+                }
+            }
+
         }
         return result;
     }
