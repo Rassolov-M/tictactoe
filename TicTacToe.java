@@ -1,4 +1,3 @@
-import java.io.DataOutput;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -26,11 +25,11 @@ public class TicTacToe {
 
         while (true){
 
-            hummanTrun(); // ход человеком
+            humanTrun(); // ход человеком
                 if (isEndGame(DOT_x)){
                     break;
                 }
-            compucterTrun(); // ход компьютером
+            computerTrun(); // ход компьютером
                 if (isEndGame(DOT_0)){
                      break;
                 }
@@ -39,60 +38,87 @@ public class TicTacToe {
     }
 
     /**
-    * Метод подготовки игрового поля
-    */
+     * Метод проверки выйгрышы
+     * @param  playerSymbol - Символ введёный пользователём
+     * @return - boolean результат проверки
+     */
 
-    private static void initMap(){
-        map = new char[SIZE][SIZE];
-        for (int i = 0; i < SIZE; i++){
-            for (int j = 0; j < SIZE; j++){
-                map[i][j] = DOT_Empty;
-            }
+    private static boolean checkWin(char playerSymbol){
+        boolean result = false;
+
+        if(checkWinDiagonals(playerSymbol) || checkWinLines(playerSymbol)){
+            result = true;
         }
+        return result;
     }
 
     /**
-     * Метод вывода игрового поля на экран
+     * проверка выйгрышных комбинацый по диаганали
+     * @param playerSymbol - символ игрока
+     * @return  флаг выйгрыша
      */
+    private static boolean checkWinDiagonals(char playerSymbol){
+        boolean leftRight, rightLeft, result;
+        leftRight   = true;
+        rightLeft   = true;
+        result      = false;
 
-    private static void printMap() {
-        for (int i = 0; i <= SIZE; i++) {
-            System.out.print(i + " ");
+        for (int i = 0; i < SIZE; i++){
+            leftRight &= (map[i][i] == playerSymbol);
+            // if(leftRight &= (map[i][i] == playerSymbol)){
+            //   leftRight = true;
+            //}
+            //else {
+            //   leftRight = false;
+            //}
+
+            rightLeft &= (map [SIZE - i - 1][i] == playerSymbol);
+
         }
-        System.out.println();
-
-        for (int i = 0; i < SIZE; i++) {
-            System.out.print((i + 1) + " ");
-
-            for (int j = 0; j < SIZE; j++) {
-                System.out.print(map[i][j] + " ");
-            }
-            System.out.println();
+        if (leftRight || rightLeft){
+            result = true;
         }
-        System.out.println();
+        return result;
     }
 
-       /**
-       * Ход человеком
-       */
+    /**
+     *  проверка выйгрыша по столбцам и линиям
+     * @param  playerSymbol - символ игрока
+     * @return флаг победы
+     */
+    private static boolean checkWinLines(char playerSymbol){
+        boolean cols, rows, result;
+        result = false;
 
-        private static void hummanTrun(){
-            int x, y;
+        for (int col = 0; col < SIZE; col++){
+            cols = true;
+            rows = true;
 
-            do {
-                System.out.println("Введите координаты ячейки...");
-                y = scanner.nextInt() - 1;
-                x = scanner.nextInt() - 1;
+            for (int row = 0; row < SIZE; row++){
+                cols &= (map[col][row] == playerSymbol);
+                rows &= (map[row][col] == playerSymbol);
+
+                //Это условие после каждой проверки колонки и столбца
+                //позволяет останавливать и выполнять дальнейшее, без проверки
+                // всех остальных столбцов и строк
+
+                if (cols || rows) {
+                    result = true;
+                    break;
+                }
+                if (result){
+                    break;
+                }
             }
-            while (!isCallValide(x, y));
-            map[y][x] = DOT_x;
+
         }
+        return result;
+    }
 
     /**
      * ход компуктером
      */
-
-    private static void compucterTrun(){
+    private static void computerTrun(){
         int x = -1;
         int y = -1;
 
@@ -255,15 +281,15 @@ public class TicTacToe {
                 }
             }
 
-                //если ничего не нашли делаем глупый ход
-                if (x == -1){
-                    do{
-                        x = random.nextInt(SIZE);
-                        y = random.nextInt(SIZE);
-                    }
-                    while (!isCallValide(x, y));
-                    System.out.println("RANDOM");
+            //если ничего не нашли делаем глупый ход
+            if (x == -1){
+                do{
+                    x = random.nextInt(SIZE);
+                    y = random.nextInt(SIZE);
                 }
+                while (!isCallValide(x, y));
+                System.out.println("RANDOM");
+            }
                             /*for (int i = 0; i < SIZE; i++){
                                 for (int j = 0; j < SIZE; j++ ){
                                     //проверяем клетки по направлениям
@@ -276,30 +302,99 @@ public class TicTacToe {
     }
 
     /**
-     * Метод валидации запрашиваемой яйчейки на корректность
-        * @param - X признак по гаризонтали
-        * @param - y признак по вертикали
-        * @return boolean - признак валидности
-        * */
+     * Ход человеком
+     */
+    private static void humanTrun(){
+        int x, y;
 
-        private static boolean isCallValide(int x, int y){
-            boolean result = true;
+        do {
+            System.out.println("Введите координаты ячейки X Y");
+            y = scanner.nextInt() - 1;
+            x = scanner.nextInt() - 1;
+        } while (!isCallValide(x, y));
 
-            //проверка координаты
-            if (x < 0 || x <= SIZE || y < 0 || y <= SIZE){
-                result = false;
-            }
+        map[y][x] = DOT_x;
+    }
 
-            //заполненность ячейки
-            if (map[y][x] != DOT_Empty){
-                result = false;
-            }
-            return result;
+    /**
+     * Метод вывода игрового поля на экран
+     */
+    private static void printMap() {
+        for (int i = 0; i <= SIZE; i++) {
+            System.out.print(i + " ");
         }
+        System.out.println();
+
+        for (int i = 0; i < SIZE; i++) {
+            System.out.print((i + 1) + " ");
+
+            for (int j = 0; j < SIZE; j++) {
+                System.out.print(map[i][j] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
+    /**
+     * Метод подготовки игрового поля
+     */
+    private static void initMap(){
+        map = new char[SIZE][SIZE];
+        for (int i = 0; i < SIZE; i++){
+            for (int j = 0; j < SIZE; j++){
+                map[i][j] = DOT_Empty;
+            }
+        }
+    }
+
+    /**
+     * Проверка на 100 -ю % заполненность поля
+     * @return boolean признак оптимальности.
+     */
+    private static boolean isMapFull(){
+        boolean result = true;
+        for (int i = 0; i < SIZE; i++){
+            for (int j = 0; j < SIZE; j++ ){
+                if (map[i][j] == DOT_Empty){
+                    //пустая клетка найдена
+                    result = false;
+                    //выходим из внутреннего цикла
+                    break;
+                }
+            }
+                //выходим из внешнего цикла, если пустая клетка найдена
+            if (!result){
+                break;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Метод валидации запрашиваемой яйчейки на корректность
+     * @param x - признак по гаризонтали
+     * @param y - признак по вертикали
+     * @return boolean - признак валидности
+     * */
+    private static boolean isCallValide(int x, int y){
+        boolean result = true;
+
+        //проверка координаты
+        if (x < 0 || x >= SIZE || y < 0 || y >= SIZE){
+            result = false;
+        }
+
+        //заполненность ячейки
+        if (map[y][x] != DOT_Empty){
+            result = false;
+        }
+        return result;
+    }
 
     /**
      *Метод проверки игры на завершение
-     * @param - playerSymbol сивол, которым играет текущий игрок
+     * @param  playerSymbol - сивол, которым играет текущий игрок
      * @return - boolean признак завершения игры
      */
     private static boolean isEndGame (char playerSymbol){
@@ -315,108 +410,6 @@ public class TicTacToe {
         if (isMapFull()){
             System.out.println("Ничья");
             result = true;
-        }
-        return result;
-    }
-
-    /**
-     * Проверка на 100 -ю % заполненность поля
-     * @return boolean признак оптимальности.
-     */
-
-    private static boolean isMapFull(){
-        boolean result = true;
-            for (int i = 0; i < SIZE; i++){
-                for (int j = 0; j < SIZE; j++ ){
-                    if (map[i][j] == DOT_Empty);
-                        //пустая клетка найдена
-                        result = false;
-                }
-
-                if (!result){
-                    //выходим если пустая клетка найдена
-                    break;
-                }
-            }
-            return result;
-    }
-
-    /**
-     * Метод проверки выйгрышы
-     * @param - playerSymbol Символ введёный пользователём
-     * @return - boolean результат проверки
-     */
-
-    private static boolean checkWin(char playerSymbol){
-        boolean result = false;
-
-        if(checkWinDiagonals(playerSymbol) || checkWinLines(playerSymbol)){
-            result = true;
-        }
-        return result;
-    }
-
-    /**
-     * проверка выйгрышных комбинацый по диаганали
-     * @param playerSymbol - символ игрока
-     * @return  флаг выйгрыша
-     */
-
-    private static boolean checkWinDiagonals(char playerSymbol){
-        boolean leftRight, rightLeft, result;
-        leftRight   = true;
-        rightLeft   = true;
-        result      = false;
-
-        for (int i = 0; i < SIZE; i++){
-            leftRight &= (map[i][i] == playerSymbol);
-            // if(leftRight &= (map[i][i] == playerSymbol)){
-            //   leftRight = true;
-            //}
-            //else {
-            //   leftRight = false;
-            //}
-
-            rightLeft &= (map [SIZE - i - 1][i] == playerSymbol);
-
-        }
-        if (leftRight || rightLeft){
-            result = true;
-             }
-        return result;
-    }
-
-    /**
-     *  проверка выйгрыша по столбцам и линиям
-     * @param - playerSymbol  символ игрока
-     * @return флаг победы
-     */
-
-    private static boolean checkWinLines(char playerSymbol){
-        boolean cols, rows, result;
-        result = false;
-
-        for (int col = 0; col < SIZE; col++){
-            cols = true;
-            rows = true;
-
-            for (int row = 0; row < row; row++){
-                cols &= (map[col][row] == playerSymbol);
-                rows &= (map[row][col] == playerSymbol);
-
-                //Это условие после каждой проверки колонки и столбца
-                //позволяет останавливать выполнять дальнеейшее, без проверки
-                // всех остальных столбцов и строк
-
-                if (cols || rows) {
-                    result = true;
-                    break;
-                }
-                if (result){
-                    break;
-                }
-            }
-
         }
         return result;
     }
