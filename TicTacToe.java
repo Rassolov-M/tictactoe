@@ -386,9 +386,9 @@ public class TicTacToe {
         }
 
         //заполненность ячейки
-        if (map[y][x] != DOT_Empty){
-            result = false;
-        }
+//        if (map[y][x] != DOT_Empty){
+//            result = false;
+//        }
         return result;
     }
 
